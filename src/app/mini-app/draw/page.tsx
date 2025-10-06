@@ -12,11 +12,14 @@ import { useUser } from "@/hooks/useUser";
 
 export default function MiniAppDrawPage() {
   const { replace } = useRouter();
-  const { getAccessToken } = useLineLogin();
+  const { getAccessToken, getProfile, getIdToken } = useLineLogin();
   const { loginFromLine, getUserProfile } = useLogin();
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+
+  const [userInfo, setUserInfo] = useState("");
+  const [idToken, setIdToken] = useState("");
 
   useAsync(async () => {
     setIsLoading(true);
@@ -33,6 +36,9 @@ export default function MiniAppDrawPage() {
       }
       await loginFromLine(accessToken);
       await getUserProfile();
+
+      setIdToken(JSON.stringify((await getIdToken()) ?? ""));
+      setIdToken(JSON.stringify((await getProfile()) ?? ""));
       replace("/draw");
     } catch (error) {
       setIsError(true);
@@ -44,7 +50,12 @@ export default function MiniAppDrawPage() {
 
   return (
     <PageManager anonymous>
-      <MiniAppLogin isLoading={isLoading} isError={isError} />
+      <MiniAppLogin isLoading={isLoading} isError={isError}>
+        <>
+          <p>User Info: {userInfo}</p>
+          <p>ID Token: {idToken}</p>
+        </>
+      </MiniAppLogin>
     </PageManager>
   );
 }
