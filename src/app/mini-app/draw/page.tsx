@@ -26,10 +26,10 @@ export default function MiniAppDrawPage() {
     setIsError(false);
 
     try {
-      if (user?.provider === "line") {
-        replace("/draw");
-        return;
-      }
+      // if (user?.provider === "line") {
+      //   replace("/draw");
+      //   return;
+      // }
       const accessToken = await getAccessToken();
       if (!accessToken) {
         throw new Error("Failed to retrieve LIFF profile");
@@ -38,7 +38,7 @@ export default function MiniAppDrawPage() {
       await getUserProfile();
 
       setIdToken(JSON.stringify((await getIdToken()) ?? ""));
-      setIdToken(JSON.stringify((await getProfile()) ?? ""));
+      setUserInfo(JSON.stringify((await getProfile()) ?? ""));
       // replace("/draw");
     } catch (error) {
       setIsError(true);
