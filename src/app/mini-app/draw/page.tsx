@@ -39,7 +39,7 @@ export default function MiniAppDrawPage() {
 
       setIdToken(JSON.stringify((await getIdToken()) ?? ""));
       setIdToken(JSON.stringify((await getProfile()) ?? ""));
-      replace("/draw");
+      // replace("/draw");
     } catch (error) {
       setIsError(true);
       console.error("Error during LIFF dependent operation", error);
